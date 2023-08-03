@@ -22,6 +22,13 @@ mongoose
   .catch(() => console.log(error));
 
 
+//routes
+app.get("/", (req, res) => {
+  res.send("node api");
+});
+  
+  // require("./routes/userRoute")(app);
 
-  
-  
+  const customerRoute = require("./route/customerRoute");
+
+  app.use("/api",customerRoute);

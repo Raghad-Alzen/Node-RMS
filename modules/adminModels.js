@@ -34,6 +34,6 @@ const adminSchema = new mongoose.Schema({
         required: [true, "please enter location !"]
     },
     });
-    
+
 const Admin = mongoose.model('Admin',adminSchema);
 module.exports = Admin;
