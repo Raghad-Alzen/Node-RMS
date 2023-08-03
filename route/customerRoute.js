@@ -13,13 +13,6 @@ router.post("/signupCustomer", async (request, response) => {
     }
   });
 
-  /*router.get("/loginCustomer", async (request, response) => {
-   try {
-    const customer = await Customer.
-   }
-  }
-  );*/
-
 
   router.get("/get_allCustomer", async (request, response) => {
     try {
@@ -50,13 +43,4 @@ router.post("/signupCustomer", async (request, response) => {
     }
   });
 
-
-
-
-
-
-
-
-
-  
   module.exports = router;

@@ -30,5 +30,14 @@ app.get("/", (req, res) => {
   // require("./routes/userRoute")(app);
 
   const customerRoute = require("./route/customerRoute");
+  const customerRoute = require("./route/customerRoute")
+  const customerRoute = require("./route/customerRoute");
+  const customerRoute = require("./route/customerRoute");
+  const customerRoute = require("./route/customerRoute");
 
+
+  app.use("/api",adminRoute);
   app.use("/api",customerRoute);
+  app.use("/api",driverRoute);
+  app.use("/api",tripRoute);
+  app.use("/api",loginRoute);
