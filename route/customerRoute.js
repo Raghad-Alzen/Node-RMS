@@ -44,31 +44,16 @@ router.post("/signupCustomer", async (request, response) => {
     }
   });
 
-  // router.get("/viewTripDescription/:tripName", async (request, response) => {
-  //   try {
-  //     const { tripName } = request.params;
-  //     const trip = await Trip.findOn({tripName});
-  //     if(!tripName)
-  //     response
-  //     .status(404)
-  //     .json({ message: 'tripName not found !'});
-  //     else {
-  //       const tripName = await Trip.findOn(tripName);
-  //       response.status(200).json(tripName);
-  //     }} catch (error) {
-  //     console.log(error.message);
-  //     response.status(500).json({ message: error.message});}
-  // });
 
 
   router.get("/viewTripDescription/:tripName", async (request, response) => {
     try {
       const { tripName } = request.params;
       const trip = await Trip.findOne({ tripName });
-      if (!tripName) {
-        return trip.status(404).json({ message: "trip not found" });
+      if (!trip) {
+        return response.status(404).json({ message: "trip not found" });
       }
-      trip.status(200).json(trip);
+      response.status(200).json(trip);
     } catch (error) {
       console.log(error.message);
       response.status(500).json({ message: error.message });
