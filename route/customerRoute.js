@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Customer = require ("../models/customerModels.js");
+const Trip = require ("../models/tripModels.js");
 
 
 router.post("/signupCustomer", async (request, response) => {
@@ -41,6 +42,21 @@ router.post("/signupCustomer", async (request, response) => {
       console.log(error.message);
       response.status(500).json({ message: error.message});
     }
+  });
+
+  router.get("/viewTripDescription/:tripName", async (request, response) => {
+    try {
+      const { tripName } = request.params;
+      const trip = await Trip.findOn({tripName});
+      if(!tripName)
+      response
+      .status(404)
+      .json({ message: 'tripName not found !'});
+      else {
+        const tripName = await Trip.findOn(tripName);
+      }} catch (error) {
+      console.log(error.message);
+      response.status(500).json({ message: error.message});}
   });
 
   module.exports = router;

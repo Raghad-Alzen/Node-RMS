@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 const tripSchema = new mongoose.Schema({
 
-    trapName: {
+    tripName: {
         type: String,
-        required: [true, "please enter user trapName !"]
+        required: [true, "please enter user tripName !"]
     },
     tripTime: {
         type: Date,
@@ -13,9 +13,9 @@ const tripSchema = new mongoose.Schema({
         type: Date,
         required: [true, "please enter user tripPrice !"]
     },
-      tripTrac: {
+    tripTrack: {
         type: String,
-        required: [true, "please enter tripTrac !"]
+        required: [true, "please enter tripTrack !"]
     },
     numberOfSeats: {
         type: Number,
