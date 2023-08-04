@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const Admin = require ("../modules/adminModels.js");
+const Admin = require ("../models/adminModels.js");
 
 
 

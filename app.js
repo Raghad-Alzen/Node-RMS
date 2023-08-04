@@ -29,15 +29,15 @@ app.get("/", (req, res) => {
   
   // require("./routes/userRoute")(app);
 
-  const customerRoute = require("./route/customerRoute");
-  const customerRoute = require("./route/customerRoute")
-  const customerRoute = require("./route/customerRoute");
-  const customerRoute = require("./route/customerRoute");
-  const customerRoute = require("./route/customerRoute");
+   const adminRoute = require("./route/customerRoute");
+   const customerRoute = require("./route/customerRoute");
+   const driverRoute = require("./route/driverRoute");
+   const tripRoute = require("./route/tripRoute");
+   const loginRoute = require("./route/loginRoute");
 
 
-  app.use("/api",adminRoute);
-  app.use("/api",customerRoute);
-  app.use("/api",driverRoute);
-  app.use("/api",tripRoute);
-  app.use("/api",loginRoute);
+   app.use("/api/admin",adminRoute);
+   app.use("/api/customer",customerRoute);
+   app.use("/api/driver",driverRoute);
+   app.use("/api/trip",tripRoute);
+   app.use("/api",loginRoute);

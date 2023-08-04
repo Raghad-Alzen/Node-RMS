@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const Customer = require("/models/customerModel.js");
-const Driver = require("/models/driverModel.js");
+const Customer = require ("../models/customerModels.js");
+const Driver = require ("../models/driverModels.js");
 
 router.post("/login", async (request, response) => {
     try {
@@ -10,12 +10,12 @@ router.post("/login", async (request, response) => {
 
         const customer = await Customer.findOne({ email, password});
          if(customer) {
-          return response.status(200).json({role: "customer", message: "cutomer login successful", id: customer._id, name: customer.customerName });
+          return response.status(200).json({role: "customer", message: "customer login successful", id: customer._id, name: customer.firstName });
         }
 
         const driver = await Driver.findOne({ email, password});
          if(driver) {
-        return response.status(200).json({role: "driver", message: "driver login successful", id: driver._id, name: driver.driverName });
+        return response.status(200).json({role: "driver", message: "driver login successful", id: driver._id, name: driver.firstName });
        }
 
         return response.status(400).json({ error: "Invalid email or password" });
