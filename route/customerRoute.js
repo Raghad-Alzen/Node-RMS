@@ -14,18 +14,6 @@ router.post("/signupCustomer", async (request, response) => {
     }
   });
 
-
-  router.get("/get_allCustomer", async (request, response) => {
-    try {
-      const customer = await Customer.find({}).select("email");
-      response.status(200).json(customer);
-    } catch (error) {
-      console.log(error.message);
-      response.status(500).json({ message: error.message });
-    }
-  });
-   
-
   router.put("/updateCustomer_info/:id", async (request, response) => {
     try {
       const { id } = request.params;
@@ -59,6 +47,13 @@ router.post("/signupCustomer", async (request, response) => {
       response.status(500).json({ message: error.message });
     }
   });
+
+  /*router.delete("/deleteReservation/:id", async (request, response) => {
+    try {
+      const { id } = request.params;
+      const 
+    }
+  })*/
 
   
 

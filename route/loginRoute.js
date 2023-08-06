@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const Admin = require ("../models/adminModels.js");
 const Customer = require ("../models/customerModels.js");
 const Driver = require ("../models/driverModels.js");
 
@@ -7,6 +8,12 @@ router.post("/login", async (request, response) => {
     try {
         const { email, password } = request.body;
          
+
+        const admin = await Admin.findOne({ email, password });
+        if (admin) {
+          return response.status(200).json({ role: "admin", message: "Admin login successful", id: admin._id, name: admin.firstName });
+        }
+
 
         const customer = await Customer.findOne({ email, password});
          if(customer) {
