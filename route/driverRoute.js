@@ -3,7 +3,17 @@ const router = express.Router();
 const Driver = require ("../models/driverModels.js");
 const Trip = require ("../models/tripModels.js");
 
-/*router.put("/updatedriver_info/:id", async (request, response) => {
+router.get("/get_allDriver", async (request, response) => {
+  try {
+    const driver = await Driver.find({});
+    response.status(200).json(driver);
+  } catch (error) {
+    console.log(error.message);
+    response.status(500).json({ message: error.message });
+  }
+});
+
+router.put("/updatedriver_info/:id", async (request, response) => {
     try {
       const { id } = request.params;
       const driver = await Driver.findByIdAndUpdate(id, request.body);
@@ -34,7 +44,7 @@ router.get("/viewTripDescription/:tripName", async (request, response) => {
       console.log(error.message);
       response.status(500).json({ message: error.message });
     }
-  });*/
+  });
 
 
 
