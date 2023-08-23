@@ -9,7 +9,7 @@ const driverschema = new mongoose.Schema({
         type: String,
         required: [true, "please enter user lastName !"]
     },
-    userName: {
+    email: {
         type: String,
         required: [true, "please enter email !"]
     },
@@ -21,18 +21,18 @@ const driverschema = new mongoose.Schema({
         type: String,
         required: [true, "please enter gender !"]
     },
-    age: {
+    /*age: {
         type: Number,
         required: [true, "please enter age !"]
-    },
-    phones: {
+    },*/
+    phoneNumer: {
         type: Number,
-        required: [true, "please enter phones !"]
+        required: [true, "please enter phoneNumer !"]
     },
-    location: {
+    /*location: {
         type: String,
         required: [true, "please enter location !"]
-    },
+    },*/
     });
 const Driver = mongoose.model('Driver',driverschema);
 module.exports = Driver;

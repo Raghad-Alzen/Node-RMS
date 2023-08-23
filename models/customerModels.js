@@ -3,31 +3,31 @@ const customerSchema = new mongoose.Schema({
 
     firstName: {
         type: String,
-        required: [true, "please enter user firstName !"]
+        required: [false, "please enter user firstName !"]
     },
     lastName: {
         type: String,
-        required: [true, "please enter user lastName !"]
+        required: [false, "please enter user lastName !"]
     },
     matherName: {
         type: String,
-        required: [true, "please enter user matherName  !"]
+        required: [false, "please enter user matherName  !"]
     },
     fatherName: {
         type: String,
-        required: [true, "please enter user fatherName !"]
+        required: [false, "please enter user fatherName !"]
     },
-    userName: {
+    email: {
         type: String,
-        required: [true, "please enter email !"]
+        required: [false, "please enter email !"]
     },
     password: {
         type: String,
-        required: [true, "please enter password !"]
+        required: [false, "please enter password !"]
     },
     gender: {
         type: String,
-        required: [true, "please enter gender !"]
+        required: [false, "please enter gender !"]
     },
     /*age: {
         type: Number,
@@ -35,7 +35,7 @@ const customerSchema = new mongoose.Schema({
     },*/
     phoneNumber: {
         type: Number,
-        required: [true, "please enter phoneNumber !"]
+        required: [false, "please enter phoneNumber !"]
     },
     /*location: {
         type: String,
@@ -43,7 +43,7 @@ const customerSchema = new mongoose.Schema({
     },*/
     nationalNumber: {
         type: Number,
-        required: [true, "please enter nationalNumber !"]
+        required: [false, "please enter nationalNumber !"]
     },
     });
 const Customer = mongoose.model('Customer',customerSchema);
