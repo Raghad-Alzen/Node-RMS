@@ -9,7 +9,7 @@ const adminSchema = new mongoose.Schema({
         type: String,
         required: [true, "please enter user lastName !"]
     },
-    email: {
+    userName: {
         type: String,
         required: [true, "please enter email !"]
     },

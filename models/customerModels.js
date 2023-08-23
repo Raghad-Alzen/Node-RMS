@@ -9,7 +9,15 @@ const customerSchema = new mongoose.Schema({
         type: String,
         required: [true, "please enter user lastName !"]
     },
-    email: {
+    matherName: {
+        type: String,
+        required: [true, "please enter user matherName  !"]
+    },
+    fatherName: {
+        type: String,
+        required: [true, "please enter user fatherName !"]
+    },
+    userName: {
         type: String,
         required: [true, "please enter email !"]
     },
@@ -21,17 +29,21 @@ const customerSchema = new mongoose.Schema({
         type: String,
         required: [true, "please enter gender !"]
     },
-    age: {
+    /*age: {
         type: Number,
         required: [true, "please enter age !"]
-    },
-    phones: {
+    },*/
+    phoneNumer: {
         type: Number,
-        required: [true, "please enter phones !"]
+        required: [true, "please enter phoneNumer !"]
     },
-    location: {
+    /*location: {
         type: String,
         required: [true, "please enter location !"]
+    },*/
+    nationalNumber: {
+        type: Number,
+        required: [true, "please enter nationalNumber !"]
     },
     });
 const Customer = mongoose.model('Customer',customerSchema);
