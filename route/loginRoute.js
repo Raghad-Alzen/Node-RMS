@@ -9,10 +9,10 @@ router.post("/login", async (request, response) => {
         const { email, password } = request.body;
          
 
-        const admin = await Admin.findOne({ email, password });
+        /*const admin = await Admin.findOne({ email, password });
         if (admin) {
           return response.status(200).json({ role: "admin", message: "Admin login successful", id: admin._id, name: admin.firstName });
-        }
+        }*/
 
 
         const customer = await Customer.findOne({ email, password});

@@ -33,9 +33,9 @@ const customerSchema = new mongoose.Schema({
         type: Number,
         required: [true, "please enter age !"]
     },*/
-    phoneNumer: {
+    phoneNumber: {
         type: Number,
-        required: [true, "please enter phoneNumer !"]
+        required: [true, "please enter phoneNumber !"]
     },
     /*location: {
         type: String,
