@@ -6,7 +6,7 @@ const Trip = require ("../models/tripModels.js");
 
 router.post("/signupDriver", async (request, response) => {
   try {
-    const driver = await driver.create(request.body);
+    const driver = await Driver.create(request.body);
     response.status(200).json(driver);
   } catch (error) {
     console.log(error.message);

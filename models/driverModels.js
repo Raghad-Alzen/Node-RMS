@@ -25,8 +25,8 @@ const driverschema = new mongoose.Schema({
         type: Number,
         required: [true, "please enter age !"]
     },*/
-    phoneNumer: {
-        type: Number,
+    phoneNumber: {
+        type: String,
         required: [true, "please enter phoneNumer !"]
     },
     /*location: {
