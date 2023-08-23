@@ -34,6 +34,7 @@ app.get("/", (req, res) => {
    const driverRoute = require("./route/driverRoute");
    const tripRoute = require("./route/tripRoute");
    const loginRoute = require("./route/loginRoute");
+   const signupRoute = require("./route/signupRoute") 
 
 
    app.use("/api/admin",adminRoute);
@@ -41,3 +42,4 @@ app.get("/", (req, res) => {
    app.use("/api/driver",driverRoute);
    app.use("/api/trip",tripRoute);
    app.use("/api",loginRoute);
+   app.use("/api",signupRoute)
