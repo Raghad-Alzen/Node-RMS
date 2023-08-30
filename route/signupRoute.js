@@ -23,6 +23,28 @@ router.post("/signup/:userType", async (request, response) => {
       response.status(500).json({ message: error.message });
     }
   });
+
+
+  router.post("/signupCustomer", async (request, response) => {
+    try {
+      const customer = await Customer.create(request.body);
+      response.status(200).json(customer);
+    } catch (error) {
+      console.log(error.message);
+      response.status(500).json({ message: error.message });
+    }
+  });
+
+
+  router.post("/signupDriver", async (request, response) => {
+    try {
+      const driver = await Driver.create(request.body);
+      response.status(200).json(driver);
+    } catch (error) {
+      console.log(error.message);
+      response.status(500).json({ message: error.message });
+    }
+  });
   
 
 
