@@ -9,9 +9,9 @@ const customerSchema = new mongoose.Schema({
         type: String,
         required: [false, "please enter user lastName !"]
     },
-    matherName: {
+    motherName: {
         type: String,
-        required: [false, "please enter user matherName  !"]
+        required: [false, "please enter user motherName  !"]
     },
     fatherName: {
         type: String,
@@ -29,22 +29,56 @@ const customerSchema = new mongoose.Schema({
         type: String,
         required: [false, "please enter gender !"]
     },
-    /*age: {
-        type: Number,
-        required: [true, "please enter age !"]
-    },*/
+   
     phoneNumber: {
         type: String,
         required: [false, "please enter phoneNumber !"]
     },
-    /*location: {
-        type: String,
-        required: [true, "please enter location !"]
-    },*/
+ 
     nationalNumber: {
         type: Number,
         required: [false, "please enter nationalNumber !"]
     },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    seatsComfortable: {
+        type: String,
+        enum: ['excellent', 'good', 'bad'],
+        required: false,
+      },
+
+      busQuiet: {
+        type: String,
+        enum: ['excellent', 'good', 'bad'],
+        required: false,
+      },
+      validRatings: {
+        type: String,
+        enum: ['excellent', 'good', 'bad'],
+        required: false,
+      },
+    // validRatings:{
+    //     type: String,
+    //     required: [false, "please enter rateBus !"]
+    // },
+    
     });
 const Customer = mongoose.model('Customer',customerSchema);
 module.exports = Customer;
