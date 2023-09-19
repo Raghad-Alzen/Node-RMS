@@ -3,7 +3,7 @@ const router = express.Router();
 const Customer = require("../models/customerModels.js");
 const Trip = require("../models/tripModels.js");
 const rating = require("../models/ratingModels.js");
-const repetedTrip = require("../models/repeatedTrip.js");
+const repeatedTrip = require("../models/repeatedTrip.js");
 
 // router.get("/get_allCustomer", async (request, response) => {
 //   try {
@@ -48,79 +48,100 @@ router.get("/viewTripDescription/:id", async (req, res) => {
 
 
 router.post("/rating-bus", async (request, response) => {
-  
-  var typeOfRating = request.body.ratingType;
-  switch (typeOfRating) {
-    case bus:
-      var ratingBusForm = request.body.ratingForm;
-      const rating1 = await Rating.create(ratingBusForm);
-      res.status(200).json(rating1);
-      break;
-    case time:
-      var ratingTimeForm = request.body.ratingForm;
-      const rating2 = await Rating.create(ratingTimeForm);
-      res.status(200).json(rating2);
-      break;
-    case behaviors:
-      var ratingBehaviorsForm = request.body.ratingForm;
-      const rating3 = await Rating.create(ratingBehaviorsForm);
-      res.status(200).json(rating3);
-      break;
-  }
-  const { seatsComfortable, busQuiet, airConditioning, baggageTransportingService, busDiverSafetyDriving } = request.body;
-
-  const validRatings = ['excellent', 'good', 'bad'];
-
   try {
-    if (validRatings.includes(seatsComfortable) &&
-      validRatings.includes(busQuiet) &&
-      validRatings.includes(airConditioning) &&
-      validRatings.includes(busDiverSafetyDriving) &&
-      validRatings.includes(baggageTransportingService) &&
-      trip._id
-    ) {
-      rating.trip._id = trip._id;
-
-      rating.seatsComfortable = seatsComfortable;
-      rating.busQuiet = busQuiet;
-      rating.airConditioning = airConditioning;
-      rating.busDiverSafetyDriving = busDiverSafetyDriving;
-      rating.baggageTransportingService = baggageTransportingService;
-      response.status(200).json({ message: "Thank you for your rating!" });
-    } else {
-      response.status(422).json({ message: "Please enter a valid rating for seat comfort and quietness of the bus." });
+    var typeOfRating = request.body.ratingType;
+    switch (typeOfRating) {
+      case "bus": 
+        var ratingFormBus = request.body.ratingForm;
+        const rating1 = await Rating.create(ratingFormBus);
+        response.status(200).json(rating1);
+        break;
+      case "time": 
+        var ratingFormTime = request.body.ratingForm;
+        const rating2 = await Rating.create(ratingFormTime);
+        response.status(200).json(rating2);
+        break;
+      case "behaviors": 
+        var ratingFormBehaviors = request.body.ratingForm;
+        const rating3 = await Rating.create(ratingFormBehaviors);
+        response.status(200).json(rating3);
+        break;
+      default:
+        response.status(400).json({ message: "Invalid rating type" });
+        break;
     }
   } catch (error) {
-    response.status(500).json({ message: "Internal Server Error" });
+    response.status(500).json({ message: "Internal server error" });
   }
 });
 
 
 
-router.post('/add-tick', (request, response) => {
-  const { startPoint, endPoint } = request.body;
+  
+  // const { seatsComfortable, busQuiet, airConditioning, baggageTransportingService, busDiverSafetyDriving } = request.body;
 
-  if (!startPoint || !endPoint) {
-    return response.status(400).json({ error: 'Both startPoint and endPoint are required.' });
-  }
+  // const validRatings = ['excellent', 'good', 'bad'];
 
-  const newTick = { startPoint, endPoint };
-  ticks.push(newTick);
+  // try {
+  //   if (validRatings.includes(seatsComfortable) &&
+  //     validRatings.includes(busQuiet) &&
+  //     validRatings.includes(airConditioning) &&
+  //     validRatings.includes(busDiverSafetyDriving) &&
+  //     validRatings.includes(baggageTransportingService) &&
+  //     trip._id
+  //   ) {
+  //     rating.trip._id = trip._id;
 
-  response.status(200).json(newTick);
-});
+  //     rating.seatsComfortable = seatsComfortable;
+  //     rating.busQuiet = busQuiet;
+  //     rating.airConditioning = airConditioning;
+  //     rating.busDiverSafetyDriving = busDiverSafetyDriving;
+  //     rating.baggageTransportingService = baggageTransportingService;
+  //     response.status(200).json({ message: "Thank you for your rating!" });
+  //   } else {
+  //     response.status(422).json({ message: "Please enter a valid rating for seat comfort and quietness of the bus." });
+  //   }
+  // } catch (error) {
+  //   response.status(500).json({ message: "Internal Server Error" });
+  // }
 
 
 
 
+// router.post("/AddNewTrip/:id", async (request, response) => {
+//   try {
+//     const { id } = request.params;
+//     const trip = await Trip.findById(id);
+//     const repeated = await repeatedTrip.findById(id);
+//     if (trip) {
+//       repeated.forEach(tripp => {
+//         if (tripp.startPoint == repeated.startPoint && tripp.endPoint == repeated.endPoint) {
+//           repeated.repeatedNum += 1;
+//         } else {
+//           repeatedTrip.create({ startPoint: tripp.startPoint, endPoint: tripp.endPoint, repeatedNum: 1 });
+//         }
+//       })
+//       const customer = await Customer.findById(request.body.customer.id);
+//       if (customer) {
+//         trip.customer = request.body.customer;
+//         trip.StatusTrip = "effective";
+//       }
 
-
+//       return response.status(200).json(trip);
+//     } else {
+//       return response.status(400).json({ error: 'Both startPoint and endPoint are required.' });
+//     }
+//   } catch (error) {
+//     console.log(error.message);
+//     response.status(500).json({ message: error.message });
+//   }
+// });
 
 router.post("/AddNewTrip/:id", async (request, response) => {
   try {
     const { id } = request.params;
     const trip = await Trip.findById(id);
-    const repeted = await repetedTrip.findById(id);
+    const repeted = await repeatedTrip.findById(id);
     if (trip) {
       repeted.forEach(tripp => {
         if (tripp.startPoint == repeted.startPoint && tripp.endPoint == repeted.endPoint) {
@@ -206,7 +227,8 @@ router.get("/checkTrip/:id", async (request, response) => {
 
 router.get("/getTopTrip", async (request, response) => {
   try {
-
+    const trip = await Trip.find({});
+    response.status(200).json(trip)
   } catch (error) {
     console.log(error.message);
     response.status(500).json({ message: error.message });
@@ -218,6 +240,15 @@ function getRandomArbitrary(min, max) {
 }
 
 
+// router.get("/get_allCustomer", async (request, response) => {
+//   try {
+//     const customer = await Customer.find({});
+//     response.status(200).json(customer);
+//   } catch (error) {
+//     console.log(error.message);
+//     response.status(500).json({ message: error.message });
+//   }
+// });
 
 
 module.exports = router;

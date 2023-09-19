@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const ratingSchema = new mongoose.Schema({
+
   ratingFormBus: [{
     seatsComfortable: {
       type: String,
@@ -27,6 +28,18 @@ const ratingSchema = new mongoose.Schema({
     }
   }
   ],
+
+  ratingFormTime:[{
+
+  }
+  ],
+
+  ratingFormBehaviors:[{
+
+
+  }
+],
+
 
 });
 
