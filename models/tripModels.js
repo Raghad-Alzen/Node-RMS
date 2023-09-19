@@ -39,18 +39,6 @@ const tripSchema = new mongoose.Schema({
         required: [false, "Please enter the customer ID"],
       },
     
-    // tripTrack: {
-    //     type: String,
-    //     required: [true, "please enter tripTrack !"]
-    // },
-    // numberOfSeats: {
-    //     type: Number,
-    //     required: [true, "please enter numberOfSeats !"]
-    // },
-    // timeExpectedToArrive : {
-    //     type: Date,
-    //     required: [true, "please enter timeExpectedToArrive !"]
-    // },
     });
 const Trip = mongoose.model('Trip',tripSchema);
 module.exports = Trip;

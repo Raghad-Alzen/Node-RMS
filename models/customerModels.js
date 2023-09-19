@@ -41,44 +41,6 @@ const customerSchema = new mongoose.Schema({
     },
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    seatsComfortable: {
-        type: String,
-        enum: ['excellent', 'good', 'bad'],
-        required: false,
-      },
-
-      busQuiet: {
-        type: String,
-        enum: ['excellent', 'good', 'bad'],
-        required: false,
-      },
-      validRatings: {
-        type: String,
-        enum: ['excellent', 'good', 'bad'],
-        required: false,
-      },
-    // validRatings:{
-    //     type: String,
-    //     required: [false, "please enter rateBus !"]
-    // },
-    
     });
 const Customer = mongoose.model('Customer',customerSchema);
 module.exports = Customer;
