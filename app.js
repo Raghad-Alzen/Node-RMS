@@ -29,7 +29,7 @@ app.get("/", (req, res) => {
   
   // require("./routes/userRoute")(app);
 
-   const adminRoute = require("./route/customerRoute");
+   const adminRoute = require("./route/adminRoute");
    const customerRoute = require("./route/customerRoute");
    const driverRoute = require("./route/driverRoute");
    const tripRoute = require("./route/tripRoute");

@@ -1,8 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const Customer = require ("../models/customerModels.js");
-const Driver = require ("../models/driverModels.js");
-
 
 // router.post("/signup/:userType", async (request, response) => {
 //     try {
@@ -35,17 +33,6 @@ const Driver = require ("../models/driverModels.js");
     }
   });
 
-
-  router.post("/signupDriver", async (request, response) => {
-    try {
-      const driver = await Driver.create(request.body);
-      response.status(200).json(driver);
-    } catch (error) {
-      console.log(error.message);
-      response.status(500).json({ message: error.message });
-    }
-  });
-  
 
 
 module.exports = router;

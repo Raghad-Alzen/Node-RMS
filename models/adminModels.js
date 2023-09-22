@@ -9,7 +9,7 @@ const adminSchema = new mongoose.Schema({
         type: String,
         required: [true, "please enter user lastName !"]
     },
-    userName: {
+    email: {
         type: String,
         required: [true, "please enter email !"]
     },
@@ -21,18 +21,11 @@ const adminSchema = new mongoose.Schema({
         type: String,
         required: [true, "please enter gender !"]
     },
-    age: {
-        type: Number,
-        required: [true, "please enter age !"]
-    },
     phones: {
         type: Number,
         required: [true, "please enter phones !"]
     },
-    location: {
-        type: String,
-        required: [true, "please enter location !"]
-    },
+
     });
 
 const Admin = mongoose.model('Admin',adminSchema);

@@ -1,6 +1,11 @@
 const mongoose = require('mongoose');
 const tripSchema = new mongoose.Schema({
 
+    tripName: {
+        type: String,
+        required: [false, "please enter user tripName !"]
+    },
+
     startPoint: {
         type: String,
         
@@ -16,12 +21,6 @@ const tripSchema = new mongoose.Schema({
         required: [false, "please enter user tripPrice !"]
     },
 
-    tripName: {
-        type: String,
-        required: [false, "please enter user tripName !"]
-    },
-
-    
     tripTime: {
         type: Date,
         required: [false, "please enter user tripTime !"]
@@ -33,6 +32,12 @@ const tripSchema = new mongoose.Schema({
         enum: ['effective', 'canceled', 'finished']
 
     },
+
+    // driverName: {
+    //     type: String,
+    //     required: [true, "please enter driver!"],
+    //   },
+
     customer: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "customer",
