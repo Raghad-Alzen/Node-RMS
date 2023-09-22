@@ -23,7 +23,7 @@ mongoose
 
 
 //routes
-app.get("/", (req, res) => {
+app.get("/", (request, response) => {
   res.send("node api");
 });
   
@@ -32,7 +32,6 @@ app.get("/", (req, res) => {
    const adminRoute = require("./route/adminRoute");
    const customerRoute = require("./route/customerRoute");
    const driverRoute = require("./route/driverRoute");
-   const tripRoute = require("./route/tripRoute");
    const loginRoute = require("./route/loginRoute");
    const signupRoute = require("./route/signupRoute") 
 
@@ -40,6 +39,5 @@ app.get("/", (req, res) => {
    app.use("/api/admin",adminRoute);
    app.use("/api/customer",customerRoute);
    app.use("/api/driver",driverRoute);
-   app.use("/api/trip",tripRoute);
    app.use("/api",loginRoute);
    app.use("/api",signupRoute)

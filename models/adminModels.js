@@ -9,6 +9,14 @@ const adminSchema = new mongoose.Schema({
         type: String,
         required: [true, "please enter user lastName !"]
     },
+    gender: {
+        type: Number,
+        required: [true, "please enter gender !"]
+    },
+    phoneNumber: {
+        type: Number,
+        required: [true, "please enter phoneNumber !"]
+    },
     email: {
         type: String,
         required: [true, "please enter email !"]
@@ -16,14 +24,6 @@ const adminSchema = new mongoose.Schema({
     password: {
         type: String,
         required: [true, "please enter password !"]
-    },
-    gender: {
-        type: String,
-        required: [true, "please enter gender !"]
-    },
-    phones: {
-        type: Number,
-        required: [true, "please enter phones !"]
     },
 
     });

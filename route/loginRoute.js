@@ -1,6 +1,6 @@
 const express = require('express');
-const router = express.Router();
-const Admin = require ("../models/adminModels.js");
+const router = express.Router(); 
+
 const Customer = require ("../models/customerModels.js");
 const Driver = require ("../models/driverModels.js");
 

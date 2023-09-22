@@ -1,9 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const Customer = require("../models/customerModels.js");
-const Trip = require("../models/tripModels.js");
-const rating = require("../models/ratingModels.js");
-const repeatedTrip = require("../models/repeatedTrip.js");
+const Admin = require ("../models/adminModels.js");
+const Customer = require ("../models/customerModels.js");
+const Driver = require ("../models/driverModels.js");
+const Rating = require ("../models/ratingModels.js");
+const Repeatedtrip = require ("../models/repeatedtripModels.js");
+const Trip = require ("../models/tripModels.js");
 
 
 router.get('/getMyTickets/:customerId', async (request, response) => {
@@ -26,8 +28,8 @@ router.get('/getMyTickets/:customerId', async (request, response) => {
 
 router.get("/getTopTrip", async (request, response) => {
   try {
-    const RepeatedTrip = await repeatedTrip.find({}).sort({ repeatedNum: -1 }); 
-    response.status(200).json(RepeatedTrip);
+    const repeatedtrip = await Repeatedtrip.find({}).sort({ repeatedNum: -1 }); 
+    response.status(200).json(Repeatedtrip);
   } catch (error) {
     console.error(error.message);
     response.status(500).json({ message: error.message });
@@ -69,11 +71,11 @@ router.post("/AddNewTrip/:id", async (request, response) => {
   try {
     const { id } = request.params;
     const trip = await Trip.findById(id);
-    const repeted = await repeatedTrip.findById(id);
+    const repeatedTrip = await RepeatedTrip.findById(id);
     if (trip) {
-      repeted.forEach(tripp => {
-        if (tripp.startPoint == repeted.startPoint && tripp.endPoint == repeted.endPoint) {
-          repeted.repeatedNum += 1;
+      repeated.forEach(tripp => {
+        if (tripp.startPoint == repeated.startPoint && tripp.endPoint == repeated.endPoint) {
+          repeated.repeatedNum += 1;
         } else {
           repeatedTrip.create({ startPoint: tripp.startPoint, endPoint: tripp.endPoint, repeatedNum: 1 });
         }
@@ -138,7 +140,7 @@ router.post("/AddNewTrip1/:id", async (request, response) => {
 
 
 
-router.post("/getPrice", async (request, response) => {
+router.post("/tripPrice", async (request, response) => {
   try {
 //    console.log("in try");
 //    console.log(request.body);
@@ -159,7 +161,7 @@ router.post("/getPrice", async (request, response) => {
 
 
 
-router.post("/getPrice1", async (request, response) => {
+router.post("/tripPrice1", async (request, response) => {
   try {
     const { startPoint, endPoint } = request.body;
     if (!startPoint || !endPoint) {
@@ -178,11 +180,6 @@ router.post("/getPrice1", async (request, response) => {
     response.status(500).json({ message: error.message });
   }
 });
-
-
-
-
-
 
  function getFixedPrice(startPoint, endPoint) {
    const fixedPrices ={
@@ -285,9 +282,6 @@ router.post("/getPrice1", async (request, response) => {
     'As Suwaida-AlHasakah': 60000,
   }
   
-  
-  
-
   const key = `${startPoint}-${endPoint}`;
   return fixedPrices[key] !== undefined ? fixedPrices[key] : null;
 }
@@ -295,7 +289,7 @@ router.post("/getPrice1", async (request, response) => {
 
 
 
-router.put("/updateCustomer_info/:id", async (request, response) => {
+router.put("/additionalCustomer_info/:id", async (request, response) => {
   try {
     const { id } = request.params;
     const { motherName } = request.body;
@@ -305,7 +299,6 @@ router.put("/updateCustomer_info/:id", async (request, response) => {
       {motherName},
       {fatherName},
       {nationalNumber},
-      //{new: true}
       );
 
     if(!customer)
@@ -324,12 +317,11 @@ router.put("/updateCustomer_info/:id", async (request, response) => {
 
 
 
-router.put("/updateTrip_info/:id", async (request, response) => {
+router.put("/tripTime/:id", async (request, response) => {
   try {
     const { id } = request.params;
     const { tripTime } = request.body;
-    const trip = await Trip.findByIdAndUpdate(id, 
-      {tripTime},
+    const trip = await Trip.findByIdAndUpdate(id, {tripTime},
       //{new: true}
       );
 
@@ -348,23 +340,23 @@ router.put("/updateTrip_info/:id", async (request, response) => {
 });
 
 
-router.post("/Rating", async (request, response) => {
+router.post("/rating", async (request, response) => {
   try {
     var typeOfRating = request.body.ratingType;
     switch (typeOfRating) {
       case "bus": 
         var ratingFormBus = request.body.ratingFormBus;
-        const rating1 = await rating.create(ratingFormBus);
+        const rating1 = await Rating.create(ratingFormBus);
         response.status(200).json(rating1);
         break;
       case "time": 
         var ratingFormTime = request.body.ratingFormTime;
-        const rating2 = await rating.create(ratingFormTime);
+        const rating2 = await Rating.create(ratingFormTime);
         response.status(200).json(rating2);
         break;
       case "behaviors": 
         var ratingFormBehaviors = request.body.ratingFormBehaviors;
-        const rating3 = await rating.create(ratingFormBehaviors);
+        const rating3 = await Rating.create(ratingFormBehaviors);
         response.status(200).json(rating3);
         break;
       default:

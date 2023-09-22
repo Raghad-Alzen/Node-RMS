@@ -17,6 +17,19 @@ const customerSchema = new mongoose.Schema({
         type: String,
         required: [false, "please enter user fatherName !"]
     },
+    gender: {
+        type: Number,
+        required: [false, "please enter gender !"]
+    },
+    phoneNumber: {
+        type: Number,
+        required: [false, "please enter phoneNumber !"]
+    },
+ 
+    nationalNumber: {
+        type: Number,
+        required: [false, "please enter nationalNumber !"]
+    },
     email: {
         type: String,
         required: [false, "please enter email !"]
@@ -25,21 +38,6 @@ const customerSchema = new mongoose.Schema({
         type: String,
         required: [false, "please enter password !"]
     },
-    gender: {
-        type: String,
-        required: [false, "please enter gender !"]
-    },
-   
-    phoneNumber: {
-        type: String,
-        required: [false, "please enter phoneNumber !"]
-    },
- 
-    nationalNumber: {
-        type: Number,
-        required: [false, "please enter nationalNumber !"]
-    },
-
 
     });
 const Customer = mongoose.model('Customer',customerSchema);

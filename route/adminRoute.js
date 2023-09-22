@@ -1,8 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const Admin = require ("../models/adminModels");
+const Admin = require ("../models/adminModels.js");
 const Customer = require ("../models/customerModels.js");
 const Driver = require ("../models/driverModels.js");
+const Rating = require ("../models/ratingModels.js");
+const repeatedTrip = require ("../models/repeatedtripModels.js");
 const Trip = require ("../models/tripModels.js");
 
 
@@ -36,7 +38,7 @@ router.get("/get_allCustomer", async (request, response) => {
 
                                     ////  Driver
 
-router.post("/AddDriver", async (request, response) => {
+router.post("/addDriver", async (request, response) => {
   try {
     const driver = await Driver.create(request.body);
     response.status(200).json(driver);
@@ -65,11 +67,11 @@ router.put("/updateDriver/:id", async (request, response) => {
 
 router.delete("/deleteDriver/:id", async (request, response) => {
   try {
-    const { id } = req.params;
+    const { id } = request.params;
     const driver = await Driver.findByIdAndDelete(id);
     if (!driver)
     response.status(404).json({ message: `cannot find driver with id ${id} !` });
-    else response.status(200).json({ message: "patient delete from driver" });
+    else response.status(200).json({ message: " delete driver" });
   } catch (error) {
     response.status(500).json({ message: error.message });
   }
@@ -89,15 +91,33 @@ router.get("/get_allDriver", async (request, response) => {
 
                                     ////  Trip
 
-router.post("/AddTrip", async (request, response) => {
-  try {
-    const trip = await Trip.create(request.body);
-    response.status(200).json(trip);
-  } catch (error) {
-    console.log(error.message);
-    response.status(500).json({ message: error.message });
+
+
+router.post("/addTrip", async (request, response) => {
+  const { startPoint, endPoint, driverName } = request.body;
+
+  const foundDriver = await Driver.findOne({ driverName });
+
+  if (!foundDriver) {
+    return response.status(404).json({ error: "driver not found" });
   }
+
+  const newTrip = new Trip({
+    startPoint,
+    endPoint,
+    driverName: foundDriver.driverName, 
+  });
+
+  newTrip
+    .save()
+    .then((trip) => response.json(trip))
+    .catch((err) => {
+      console.log(err);
+      response.status(500).json({ error: "Could not create trip" });
+    });
 });
+
+
 
 
 router.put("/updateTrip/:id", async (request, response) => {
@@ -108,7 +128,7 @@ router.put("/updateTrip/:id", async (request, response) => {
       response.status(404).json({ message: 'cannot find user with id ${id} !' });
     else {
       const newtrip = await Trip.findById(id);
-      response.status(200).json(newdtrip);
+      response.status(200).json(newtrip);
     }
   } catch (error) {
     console.log(error.message);
@@ -118,11 +138,11 @@ router.put("/updateTrip/:id", async (request, response) => {
 
 router.delete("/deleteTrip/:id", async (request, response) => {
   try {
-    const { id } = req.params;
+    const { id } = request.params;
     const trip = await Trip.findByIdAndDelete(id);
     if (!trip)
     response.status(404).json({ message: `cannot find trip with id ${id} !` });
-    else response.status(200).json({ message: "patient delete from trip" });
+    else response.status(200).json({ message: " delete trip" });
   } catch (error) {
     response.status(500).json({ message: error.message });
   }
@@ -139,6 +159,21 @@ router.get("/get_allTrip", async (request, response) => {
   }
 });
 
+router.get("/all_finishedtrip", async (request, response) => {
+  try {
+    const trip = await Trip.find({});
+
+   
+
+    trip.StatusTrip = "finished";
+    
+
+    response.status(200).json(trip);
+  } catch (error) {
+    console.log(error.message);
+    response.status(500).json({ message: error.message });
+  }
+});
 
 
 module.exports = router;
