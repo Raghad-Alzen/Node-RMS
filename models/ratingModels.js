@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const ratingSchema = new mongoose.Schema({
 
-  ratingFormBus: [{
+  ratingFormBus: {
 
     seatsComfortable: {
       type: String,
@@ -23,10 +23,10 @@ const ratingSchema = new mongoose.Schema({
       type: String,
       required: true,
     },
-      }
-       ],
+  }
+  ,
 
-  ratingFormTime:[{
+  ratingFormTime: [{
 
     launchingdataaccuracylevel: {
       type: String,
@@ -36,21 +36,21 @@ const ratingSchema = new mongoose.Schema({
       type: String,
       required: true,
     },
-      }
-        ],
+  }
+  ],
 
-  ratingFormBehaviors:[{
+  ratingFormBehaviors: [{
 
     busDriverbehaviorsandsaviorfaire: {
       type: String,
       required: true,
     },
-      customersaroundbehaviorsandsaviorfaire: {
-        type: String,
-        required: true,
-      },
-        }
-         ],
+    customersaroundbehaviorsandsaviorfaire: {
+      type: String,
+      required: true,
+    },
+  }
+  ],
 
 });
 

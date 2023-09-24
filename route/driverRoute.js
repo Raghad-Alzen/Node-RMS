@@ -4,7 +4,7 @@ const Admin = require ("../models/adminModels.js");
 const Customer = require ("../models/customerModels.js");
 const Driver = require ("../models/driverModels.js");
 const Rating = require ("../models/ratingModels.js");
-const RepeatedTrip = require ("../models/repeatedtripModels.js");
+const RepeatedTrip = require ("../models/repeatedModels.js");
 const Trip = require ("../models/tripModels.js");
 
 

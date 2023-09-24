@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const Admin = require ("../models/adminModels.js");
-const Customer = require ("../models/customerModels.js");
-const Driver = require ("../models/driverModels.js");
-const Rating = require ("../models/ratingModels.js");
-const Repeatedtrip = require ("../models/repeatedtripModels.js");
-const Trip = require ("../models/tripModels.js");
+const Admin = require("../models/adminModels.js");
+const Customer = require("../models/customerModels.js");
+const Driver = require("../models/driverModels.js");
+const Rating = require("../models/ratingModels.js");
+const repeatedTrip = require("../models/repeatedModels.js");
+const Trip = require("../models/tripModels.js");
 
 
 router.get('/getMyTickets/:customerId', async (request, response) => {
@@ -28,7 +28,7 @@ router.get('/getMyTickets/:customerId', async (request, response) => {
 
 router.get("/getTopTrip", async (request, response) => {
   try {
-    const repeatedtrip = await Repeatedtrip.find({}).sort({ repeatedNum: -1 }); 
+    const repeatedtrip = await Repeatedtrip.find({}).sort({ repeatedNum: -1 });
     response.status(200).json(Repeatedtrip);
   } catch (error) {
     console.error(error.message);
@@ -67,25 +67,35 @@ router.get("/viewTripDescription/:id", async (req, res) => {
 });
 
 
-router.post("/AddNewTrip/:id", async (request, response) => {
+router.post("/AddNewTicket/:id", async (request, response) => {
   try {
     const { id } = request.params;
     const trip = await Trip.findById(id);
-    const repeatedTrip = await RepeatedTrip.findById(id);
+    const repeated = await repeatedTrip.findById(id);
+    console.log("repeted table");
+    console.log(repeated);
+    console.log(trip);
     if (trip) {
-      repeated.forEach(tripp => {
-        if (tripp.startPoint == repeated.startPoint && tripp.endPoint == repeated.endPoint) {
-          repeated.repeatedNum += 1;
-        } else {
-          repeatedTrip.create({ startPoint: tripp.startPoint, endPoint: tripp.endPoint, repeatedNum: 1 });
-        }
-      })
+      if (repeated != null) {
+        repeated.forEach(tripp => {
+          if (tripp.startPoint == repeated.startPoint && tripp.endPoint == repeated.endPoint) {
+            repeated.repeatedNum += 1;
+          }
+        })
+      }
+      else {
+        repeatedTrip.create({ startPoint: request.body.startPoint, endPoint: request.body.endPoint, repeatedNum: 1 });
+      }
       const customer = await Customer.findById(request.body.customer.id);
+      console.log(customer);
       if (customer) {
-        trip.customer = request.body.customer;
+        trip.customer = customer;
         trip.StatusTrip = "effective";
       }
-
+      console.log(trip);
+      const newTrip = await Trip.updateOne(trip);
+      // Trip.findByIdAndUpdate(id,trip);
+      console.log(newTrip);
       return response.status(200).json(trip);
     } else {
       return response.status(400).json({ error: 'Both startPoint and endPoint are required.' });
@@ -142,13 +152,13 @@ router.post("/AddNewTrip1/:id", async (request, response) => {
 
 router.post("/tripPrice", async (request, response) => {
   try {
-//    console.log("in try");
-//    console.log(request.body);
+    console.log("in try");
+    console.log(request.body);
     const trip = await Trip.create(request.body);
     if (!request.body.startPoint || !request.body.endPoint) {
       return response.status(400).json({ error: 'Both startPoint and endPoint are required.' });
     } else {
-      trip.tripPrice = getRandomArbitrary(1000, 5000);
+      trip.tripPrice = getFixedPrice(request.body.startPoint, request.body.endPoint);
       return response.status(200).json(trip);
     }
   } catch (error) {
@@ -168,12 +178,12 @@ router.post("/tripPrice1", async (request, response) => {
       return response.status(400).json({ error: 'Both startPoint and endPoint are required.' });
     }
 
-     const fixedPrice = getFixedPrice(startPoint, endPoint);
+    const fixedPrice = getFixedPrice(startPoint, endPoint);
 
     if (fixedPrice !== null) {
-       return response.status(200).json({ price: fixedPrice });
+      return response.status(200).json({ price: fixedPrice });
     } else {
-       return response.status(400).json({ error: 'No predefined price found for this combination.' });
+      return response.status(400).json({ error: 'No predefined price found for this combination.' });
     }
   } catch (error) {
     console.log(error.message);
@@ -181,8 +191,8 @@ router.post("/tripPrice1", async (request, response) => {
   }
 });
 
- function getFixedPrice(startPoint, endPoint) {
-   const fixedPrices ={
+function getFixedPrice(startPoint, endPoint) {
+  const fixedPrices = {
     'Aleppo-Homs': 1000,
     'Homs-Aleppo': 1000,
     'Aleppo-Damascus': 1500,
@@ -281,7 +291,7 @@ router.post("/tripPrice1", async (request, response) => {
     'AlHasakah-As Suwaida': 60000,
     'As Suwaida-AlHasakah': 60000,
   }
-  
+
   const key = `${startPoint}-${endPoint}`;
   return fixedPrices[key] !== undefined ? fixedPrices[key] : null;
 }
@@ -292,26 +302,21 @@ router.post("/tripPrice1", async (request, response) => {
 router.put("/additionalCustomer_info/:id", async (request, response) => {
   try {
     const { id } = request.params;
-    const { motherName } = request.body;
-    const { fatherName } = request.body;
-    const { nationalNumber } = request.body;
-    const customer = await Customer.findByIdAndUpdate(id, 
-      {motherName},
-      {fatherName},
-      {nationalNumber},
-      );
+    const newCustomer = await Customer.findByIdAndUpdate(id,
+      request.body,
+    );
 
-    if(!customer)
-    response
-    .status(404)
-    .json({ message: 'cannot find user with id ${id} !'});
-  else {
-    const newcustomer = await Customer.findById(id);
-    response.status(200).json(newcustomer);
-  }  
+    if (!newCustomer)
+      response
+        .status(404)
+        .json({ message: 'cannot find user with id ${id} !' });
+    else {
+      console.log(newCustomer);
+      response.status(200).json(newCustomer);
+    }
   } catch (error) {
     console.log(error.message);
-    response.status(500).json({ message: error.message});
+    response.status(500).json({ message: error.message });
   }
 });
 
@@ -320,49 +325,53 @@ router.put("/additionalCustomer_info/:id", async (request, response) => {
 router.put("/tripTime/:id", async (request, response) => {
   try {
     const { id } = request.params;
-    const { tripTime } = request.body;
-    const trip = await Trip.findByIdAndUpdate(id, {tripTime},
-      //{new: true}
-      );
+    const trip = await Trip.findById(id);
+    trip.tripTime = request.body.tripTime;
+    const updatesTrip = await Trip.findByIdAndUpdate(id,trip);
 
-    if(!trip)
-    response
-    .status(404)
-    .json({ message: 'cannot find user with id ${id} !'});
-  else {
-    const newtrip = await Trip.findById(id);
-    response.status(200).json(newtrip);
-  }  
+    if (!trip)
+      response
+        .status(404)
+        .json({ message: 'cannot find user with id ${id} !' });
+    else {
+      response.status(200).json(updatesTrip);
+    }
   } catch (error) {
     console.log(error.message);
-    response.status(500).json({ message: error.message});
+    response.status(500).json({ message: error.message });
   }
 });
 
 
 router.post("/rating", async (request, response) => {
   try {
-    var typeOfRating = request.body.ratingType;
-    switch (typeOfRating) {
-      case "bus": 
-        var ratingFormBus = request.body.ratingFormBus;
-        const rating1 = await Rating.create(ratingFormBus);
-        response.status(200).json(rating1);
-        break;
-      case "time": 
-        var ratingFormTime = request.body.ratingFormTime;
-        const rating2 = await Rating.create(ratingFormTime);
-        response.status(200).json(rating2);
-        break;
-      case "behaviors": 
-        var ratingFormBehaviors = request.body.ratingFormBehaviors;
-        const rating3 = await Rating.create(ratingFormBehaviors);
-        response.status(200).json(rating3);
-        break;
-      default:
-        response.status(400).json({ message: "Invalid rating type" });
-        break;
+    const trip = await Trip.findById(request.body.tripId);
+    if (trip) {
+      var typeOfRating = request.body.ratingType;
+      switch (typeOfRating) {
+        case "bus":
+          var ratingFormBus = request.body;
+          const rating1 = await Rating.create(ratingFormBus);
+          response.status(200).json(rating1);
+          break;
+        case "time":
+          var ratingFormTime = request.body.ratingFormTime;
+          const rating2 = await Rating.create(ratingFormTime);
+          response.status(200).json(rating2);
+          break;
+        case "behaviors":
+          var ratingFormBehaviors = request.body.ratingFormBehaviors;
+          const rating3 = await Rating.create(ratingFormBehaviors);
+          response.status(200).json(rating3);
+          break;
+        default:
+          response.status(400).json({ message: "Invalid rating type" });
+          break;
+      }
+    } else {
+      response.status(404).json({ message: "trip not found" });
     }
+
   } catch (error) {
     response.status(500).json({ message: "Internal server error" });
   }
@@ -376,6 +385,8 @@ router.get("/checkTrip/:id", async (request, response) => {
     const { id } = request.params;
     const trips = await Trip.find({});
     const customer = await Customer.findById(id);
+    console.log(customer);
+    console.log(trips);
     if (trips && customer) {
       trips.forEach(trip => {
         const today = new Date()
@@ -402,10 +413,10 @@ router.get("/checkTrip3/:id", async (request, response) => {
     const { id } = request.params;
     const trips = await Trip.find({ "customer.id": id }); // Filter trips by customer ID
     const customer = await Customer.findById(id);
-    
+
     if (trips && customer) {
       const today = new Date();
-      
+
       // Update the status of trips in the past
       trips.forEach(async (trip) => {
         if (trip.tripTime < today) {

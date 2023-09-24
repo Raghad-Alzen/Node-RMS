@@ -4,7 +4,7 @@ const Admin = require ("../models/adminModels.js");
 const Customer = require ("../models/customerModels.js");
 const Driver = require ("../models/driverModels.js");
 const Rating = require ("../models/ratingModels.js");
-const repeatedTrip = require ("../models/repeatedtripModels.js");
+const repeatedTrip = require ("../models/repeatedModels.js");
 const Trip = require ("../models/tripModels.js");
 
 
@@ -161,14 +161,15 @@ router.get("/get_allTrip", async (request, response) => {
 
 router.get("/all_finishedtrip", async (request, response) => {
   try {
-    const trip = await Trip.find({});
-
-   
-
-    trip.StatusTrip = "finished";
+    const trips = await Trip.find({});
+    const finishedTrips = [];
+    trips.forEach(trip => {
+      if(trip.StatusTrip == "finished")
+      finishedTrips.push(trip);
+    });
     
 
-    response.status(200).json(trip);
+    response.status(200).json(finishedTrips);
   } catch (error) {
     console.log(error.message);
     response.status(500).json({ message: error.message });

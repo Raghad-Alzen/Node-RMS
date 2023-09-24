@@ -15,10 +15,10 @@ const tripSchema = new mongoose.Schema({
     },
     tripPrice: {
         type: Number,
-        required: [false, "please enter user tripPrice !"]
+        required: [false, "please enter user fixedPrice !"]
     },
     tripTime: {
-        type: Date,
+        type: String,
         required: [false, "please enter user tripTime !"]
     },
     StatusTrip: {
