@@ -2,8 +2,9 @@ const express = require("express");
 const router = express.Router();
 const Customer = require("../models/customerModels.js");
 const Driver = require("../models/driverModels.js");
-const RatingDD = require("../models/ratingDriverModels.js");
+const RatingDriver = require("../models/ratingDriverModels.js");
 const Trip = require("../models/tripModels.js");
+
 
 router.get('/getMyTrips/:driverId', async (request, response) => {
   try {
@@ -41,17 +42,17 @@ router.post("/ratingDriver", async (request, response) => {
       switch (typeOfRating) {
         case "bus":
           var ratingFormBus = request.body;
-          const rating1 = await RatingDD.create(ratingFormBus);
+          const rating1 = await RatingDriver.create(ratingFormBus);
           response.status(200).json(rating1);
           break;
         case "time":
           var ratingFormTime = request.body.ratingFormTime;
-          const rating2 = await RatingDD.create(ratingFormTime);
+          const rating2 = await RatingDriver.create(ratingFormTime);
           response.status(200).json(rating2);
           break;
         case "behaviors":
           var ratingFormBehaviors = request.body.ratingFormBehaviors;
-          const rating3 = await RatingDD.create(ratingFormBehaviors);
+          const rating3 = await RatingDriver.create(ratingFormBehaviors);
           response.status(200).json(rating3);
           break;
         default:

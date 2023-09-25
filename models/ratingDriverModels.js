@@ -40,6 +40,6 @@ const ratingSchema = new mongoose.Schema({
 
 });
 
-const RatingDD = mongoose.model('RatingDD', ratingSchema);
+const RatingDriver = mongoose.model('RatingDriver', ratingSchema);
 
-module.exports = RatingDD;
+module.exports = RatingDriver;

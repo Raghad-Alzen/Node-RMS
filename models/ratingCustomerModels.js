@@ -54,6 +54,6 @@ const ratingSchema = new mongoose.Schema({
 
 });
 
-const Rating = mongoose.model('Rating', ratingSchema);
+const RatingCustomer = mongoose.model('RatingCustomer', ratingSchema);
 
-module.exports = Rating;
+module.exports = RatingCustomer;

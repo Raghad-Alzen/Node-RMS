@@ -3,7 +3,7 @@ const router = express.Router();
 const Admin = require("../models/adminModels.js");
 const Customer = require("../models/customerModels.js");
 const Driver = require("../models/driverModels.js");
-const Rating = require("../models/ratingCustomerModels.js");
+const RatingCustomer = require("../models/ratingCustomerModels.js");
 const repeatedTrip = require("../models/repeatedModels.js");
 const Trip = require("../models/tripModels.js");
 
@@ -290,17 +290,17 @@ router.post("/ratingCustomer", async (request, response) => {
       switch (typeOfRating) {
         case "bus":
           var ratingFormBus = request.body;
-          const rating1 = await Rating.create(ratingFormBus);
+          const rating1 = await RatingCustomer.create(ratingFormBus);
           response.status(200).json(rating1);
           break;
         case "time":
           var ratingFormTime = request.body.ratingFormTime;
-          const rating2 = await Rating.create(ratingFormTime);
+          const rating2 = await RatingCustomer.create(ratingFormTime);
           response.status(200).json(rating2);
           break;
         case "behaviors":
           var ratingFormBehaviors = request.body.ratingFormBehaviors;
-          const rating3 = await Rating.create(ratingFormBehaviors);
+          const rating3 = await RatingCustomer.create(ratingFormBehaviors);
           response.status(200).json(rating3);
           break;
         default:
