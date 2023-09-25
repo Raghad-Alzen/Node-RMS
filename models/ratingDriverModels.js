@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const ratingSchema = new mongoose.Schema({
 
-  ratingFormBus: {
+  ratingFormBus: [{
 
     seatsComfortable: {
       type: String,
@@ -15,36 +15,22 @@ const ratingSchema = new mongoose.Schema({
       type: String,
       required: true,
     },
-    baggageTransportingService: {
-      type: String,
-      required: true,
-    },
-    busDiverSafetyDriving: {
-      type: String,
-      required: true,
-    },
   }
-  ,
+  ],
 
   ratingFormTime: [{
 
-    launchingdataaccuracylevel: {
+    launchingdataaccuracy: {
       type: String,
       required: true,
     },
-    arrivingdataaccuracylevel: {
+    arrivingdataaccuracy: {
       type: String,
       required: true,
     },
   }
   ],
-
   ratingFormBehaviors: [{
-
-    busDriverbehaviorsandsaviorfaire: {
-      type: String,
-      required: true,
-    },
     customersaroundbehaviorsandsaviorfaire: {
       type: String,
       required: true,
@@ -54,6 +40,6 @@ const ratingSchema = new mongoose.Schema({
 
 });
 
-const Rating = mongoose.model('Rating', ratingSchema);
+const RatingDD = mongoose.model('RatingDD', ratingSchema);
 
-module.exports = Rating;
+module.exports = RatingDD;

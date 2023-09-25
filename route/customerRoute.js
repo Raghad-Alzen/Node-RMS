@@ -3,7 +3,7 @@ const router = express.Router();
 const Admin = require("../models/adminModels.js");
 const Customer = require("../models/customerModels.js");
 const Driver = require("../models/driverModels.js");
-const Rating = require("../models/ratingModels.js");
+const Rating = require("../models/ratingCustomerModels.js");
 const repeatedTrip = require("../models/repeatedModels.js");
 const Trip = require("../models/tripModels.js");
 
@@ -108,42 +108,6 @@ router.post("/AddNewTicket/:id", async (request, response) => {
 
 
 
-router.post("/AddNewTrip1/:id", async (request, response) => {
-  try {
-    const { id } = request.params;
-    const trip = await Trip.findById(id);
-
-    if (!trip) {
-      return response.status(400).json({ error: 'Trip not found.' });
-    }
-
-    const customer = await Customer.findById(request.body.customer.id);
-
-    if (!customer) {
-      return response.status(400).json({ error: 'Customer not found.' });
-    }
-
-    const repeatedTrips = await repeatedTrip.find({ startPoint: trip.startPoint, endPoint: trip.endPoint });
-
-    if (repeatedTrips.length === 0) {
-      await repeatedTrip.create({ startPoint: trip.startPoint, endPoint: trip.endPoint, repeatedNum: 1 });
-    } else {
-      const existingRepeatedTrip = repeatedTrips[0];
-      existingRepeatedTrip.repeatedNum += 1;
-      await existingRepeatedTrip.save();
-    }
-
-    trip.customer = request.body.customer;
-    trip.StatusTrip = "effective";
-    await trip.save();
-
-    return response.status(200).json(trip);
-  } catch (error) {
-    console.error(error.message);
-    response.status(500).json({ message: error.message });
-  }
-});
-
 
 
 
@@ -166,31 +130,6 @@ router.post("/tripPrice", async (request, response) => {
     response.status(500).json({ message: error.message });
   }
 })
-
-
-
-
-
-router.post("/tripPrice1", async (request, response) => {
-  try {
-    const { startPoint, endPoint } = request.body;
-    if (!startPoint || !endPoint) {
-      return response.status(400).json({ error: 'Both startPoint and endPoint are required.' });
-    }
-
-    const fixedPrice = getFixedPrice(startPoint, endPoint);
-
-    if (fixedPrice !== null) {
-      return response.status(200).json({ price: fixedPrice });
-    } else {
-      return response.status(400).json({ error: 'No predefined price found for this combination.' });
-    }
-  } catch (error) {
-    console.log(error.message);
-    response.status(500).json({ message: error.message });
-  }
-});
-
 function getFixedPrice(startPoint, endPoint) {
   const fixedPrices = {
     'Aleppo-Homs': 1000,
@@ -343,7 +282,7 @@ router.put("/tripTime/:id", async (request, response) => {
 });
 
 
-router.post("/rating", async (request, response) => {
+router.post("/ratingCustomer", async (request, response) => {
   try {
     const trip = await Trip.findById(request.body.tripId);
     if (trip) {
@@ -436,11 +375,6 @@ router.get("/checkTrip3/:id", async (request, response) => {
   }
 });
 
-
-
-function getRandomArbitrary(min, max) {
-  return Math.floor(Math.random() * (max - min) + min);
-}
 
 
 module.exports = router;

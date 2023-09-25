@@ -26,10 +26,6 @@ const tripSchema = new mongoose.Schema({
         required: [false, "please enter user StatusTrip !"],
         enum: ['effective', 'canceled', 'finished']
     },
-    tripEndDate: {
-        type: Date,
-        required: [false, "please enter user tripEndDate !"],
-    },
      driverName: {
         type: String,
         required: [false, "please enter driver!"],

@@ -1,53 +1,25 @@
 const express = require("express");
 const router = express.Router();
-const Admin = require ("../models/adminModels.js");
-const Customer = require ("../models/customerModels.js");
-const Driver = require ("../models/driverModels.js");
-const Rating = require ("../models/ratingModels.js");
-const RepeatedTrip = require ("../models/repeatedModels.js");
-const Trip = require ("../models/tripModels.js");
+const Customer = require("../models/customerModels.js");
+const Driver = require("../models/driverModels.js");
+const RatingDD = require("../models/ratingDriverModels.js");
+const Trip = require("../models/tripModels.js");
 
+router.get('/getMyTrips/:driverId', async (request, response) => {
+  try {
+    const { driverId } = request.params;
 
-// router.get("/get_allTrip", async (request, response) => {
-//   try {
-//     const trip = await Trip.find({});
-//     response.status(200).json(trip);
-//   } catch (error) {
-//     console.log(error.message);
-//     response.status(500).json({ message: error.message });
-//   }
-// });
+    const trip = await Trip.find({ driver: driverId });
 
+    if (trip.length === 0) {
+      return response.status(404).json({ message: 'No trip found for the given driver ID' });
+    }
 
-// router.get("/get_allDriver", async (request, response) => {
-//   try {
-//     const driver = await Driver.find({});
-//     response.status(200).json(driver);
-//   } catch (error) {
-//     console.log(error.message);
-//     response.status(500).json({ message: error.message });
-//   }
-// });
-
-
-// router.put("/updatedriver_info/:id", async (request, response) => {
-//     try {
-//       const { id } = request.params;
-//       const driver = await Driver.findByIdAndUpdate(id, request.body);
-//       if(!driver)
-//       response
-//       .status(404)
-//       .json({ message: 'cannot find driver with id ${id} !'});
-//     else {
-//       const newcdriver = await Driver.findById(id);
-//       response.status(200).json(newcdriver);
-//     }  
-//     } catch (error) {
-//       console.log(error.message);
-//       response.status(500).json({ message: error.message});
-//     }
-// });
-
+    response.status(200).json(trip);
+  } catch (error) {
+    response.status(500).json({ message: error.message });
+  }
+});
 
 router.get("/viewTripDescription/:id", async (req, res) => {
   try {
@@ -59,6 +31,42 @@ router.get("/viewTripDescription/:id", async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
+
+
+router.post("/ratingDriver", async (request, response) => {
+  try {
+    const trip = await Trip.findById(request.body.tripId);
+    if (trip) {
+      var typeOfRating = request.body.ratingType;
+      switch (typeOfRating) {
+        case "bus":
+          var ratingFormBus = request.body;
+          const rating1 = await RatingDD.create(ratingFormBus);
+          response.status(200).json(rating1);
+          break;
+        case "time":
+          var ratingFormTime = request.body.ratingFormTime;
+          const rating2 = await RatingDD.create(ratingFormTime);
+          response.status(200).json(rating2);
+          break;
+        case "behaviors":
+          var ratingFormBehaviors = request.body.ratingFormBehaviors;
+          const rating3 = await RatingDD.create(ratingFormBehaviors);
+          response.status(200).json(rating3);
+          break;
+        default:
+          response.status(400).json({ message: "Invalid rating type" });
+          break;
+      }
+    } else {
+      response.status(404).json({ message: "trip not found" });
+    }
+
+  } catch (error) {
+    response.status(500).json({ message: "Internal server error" });
+  }
+});
+
 
 
 

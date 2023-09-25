@@ -22,7 +22,7 @@ const driverschema = new mongoose.Schema({
         required: [false, "please enter user fatherName !"]
     },
     gender: {
-        type: Number,
+        type: String,
         required: [true, "please enter gender !"]
     },
     phoneNumber: {
