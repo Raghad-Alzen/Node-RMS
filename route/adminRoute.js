@@ -8,6 +8,29 @@ const repeatedTrip = require ("../models/repeatedModels.js");
 const Trip = require ("../models/tripModels.js");
 
 
+                                    ////  Admin
+
+
+router.post("/login", async (request, response) => {
+  try {
+      const { email, password } = request.body;
+
+      const admin = await Admin.findOne({ email, password });
+      if (admin) {
+        return response.status(200).json({ role: "admin", message: "Admin login successful", id: admin._id, name: `${admin.firstName} ${admin.lastName}` });
+      }
+
+      return response.status(400).json({ error: "Invalid email or password" });
+     } 
+      catch (error) {
+      console.log(error.message);
+      response.status(500).json({ message: error.message });
+     }
+
+    });
+
+
+
                                     ////  Customer
 
 router.put("/updateCustomer/:id", async (request, response) => {
