@@ -28,7 +28,7 @@ router.put("/updateCustomer/:id", async (request, response) => {
 
 router.get("/get_allCustomer", async (request, response) => {
   try {
-    const customer = await Customer.find({}).select(' firstName lastName email phoneNumber customerName ');
+    const customer = await Customer.find({}).select(' firstName lastName gender phoneNumber email nationalNumber fatherName  motherName ');
     response.status(200).json(customer);
   } catch (error) {
     console.log(error.message);
