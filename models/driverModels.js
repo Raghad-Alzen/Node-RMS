@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const driverschema = new mongoose.Schema({
+const driverSchema = new mongoose.Schema({
 
     firstName: {
         type: String,
@@ -9,29 +9,25 @@ const driverschema = new mongoose.Schema({
         type: String,
         required: [true, "please enter user lastName !"]
     },
-    driverName: {
-        type: String,
-        required: [true, "please enter user driverName !"]
-    },
     motherName: {
         type: String,
-        required: [false, "please enter user motherName  !"]
+        required: [true, "please enter user motherName  !"]
     },
     fatherName: {
         type: String,
-        required: [false, "please enter user fatherName !"]
+        required: [true, "please enter user fatherName !"]
     },
     gender: {
         type: String,
         required: [true, "please enter gender !"]
     },
     phoneNumber: {
-        type: Number,
-        required: [true, "please enter phoneNumer !"]
+        type: String,
+        required: [true, "please enter phoneNumber !"]
     },
     nationalNumber: {
         type: Number,
-        required: [false, "please enter nationalNumber !"]
+        required: [true, "please enter nationalNumber !"]
     },
     email: {
         type: String,
@@ -42,5 +38,5 @@ const driverschema = new mongoose.Schema({
         required: [true, "please enter password !"]
     },
     });
-const Driver = mongoose.model('Driver',driverschema);
+const Driver = mongoose.model('Driver',driverSchema);
 module.exports = Driver;

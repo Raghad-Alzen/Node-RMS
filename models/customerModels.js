@@ -18,11 +18,11 @@ const customerSchema = new mongoose.Schema({
         required: [false, "please enter user fatherName !"]
     },
     gender: {
-        type: Number,
+        type: String,
         required: [false, "please enter gender !"]
     },
     phoneNumber: {
-        type: Number,
+        type: String,
         required: [false, "please enter phoneNumber !"]
     },
  

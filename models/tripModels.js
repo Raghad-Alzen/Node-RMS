@@ -18,7 +18,7 @@ const tripSchema = new mongoose.Schema({
         required: [false, "please enter user fixedPrice !"]
     },
     tripTime: {
-        type: String,
+        type: Date,
         required: [false, "please enter user tripTime !"]
     },
     StatusTrip: {
@@ -26,10 +26,7 @@ const tripSchema = new mongoose.Schema({
         required: [false, "please enter user StatusTrip !"],
         enum: ['effective', 'canceled', 'finished']
     },
-     driverName: {
-        type: String,
-        required: [false, "please enter driver!"],
-    },
+
     customer: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "customer",

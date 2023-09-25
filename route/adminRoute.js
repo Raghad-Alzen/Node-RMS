@@ -28,7 +28,7 @@ router.put("/updateCustomer/:id", async (request, response) => {
 
 router.get("/get_allCustomer", async (request, response) => {
   try {
-    const customer = await Customer.find({}).select('  firstName lastName ')
+    const customer = await Customer.find({}).select(' firstName lastName email phoneNumber customerName ');
     response.status(200).json(customer);
   } catch (error) {
     console.log(error.message);
@@ -95,7 +95,7 @@ router.get("/get_allDriver", async (request, response) => {
 
 
 router.post("/addTrip/:id", async (request, response) => {
-  const { startPoint, endPoint } = request.body; // Remove the 'id' variable here
+  const { startPoint, endPoint } = request.body; 
 
   try {
     const { id } = request.params;
@@ -108,12 +108,12 @@ router.post("/addTrip/:id", async (request, response) => {
     const newTrip = new Trip({
       startPoint,
       endPoint,
-      driver: foundDriver._id, // Store the driver's ID in the trip document
+      driver: foundDriver._id, 
     });
 
     await newTrip.save();
 
-    response.json({ trip: newTrip }); // Return the customer ID in the response
+    response.json({ trip: newTrip }); 
   } catch (err) {
     console.error(err);
     response.status(500).json({ error: "Could not create trip" });

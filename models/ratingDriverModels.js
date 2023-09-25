@@ -20,18 +20,19 @@ const ratingSchema = new mongoose.Schema({
 
   ratingFormTime: [{
 
-    launchingdataaccuracy: {
+    launchingDataAccuracy: {
       type: String,
       required: true,
     },
-    arrivingdataaccuracy: {
+    arrivingDataAccuracy: {
       type: String,
       required: true,
     },
   }
   ],
+
   ratingFormBehaviors: [{
-    customersaroundbehaviorsandsaviorfaire: {
+    customersAroundBehaviorsAndSaviorFaire: {
       type: String,
       required: true,
     },

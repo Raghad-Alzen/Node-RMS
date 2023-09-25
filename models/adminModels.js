@@ -10,11 +10,11 @@ const adminSchema = new mongoose.Schema({
         required: [true, "please enter user lastName !"]
     },
     gender: {
-        type: Number,
+        type: String,
         required: [true, "please enter gender !"]
     },
     phoneNumber: {
-        type: Number,
+        type: String,
         required: [true, "please enter phoneNumber !"]
     },
     email: {

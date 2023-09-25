@@ -28,8 +28,8 @@ router.get('/getMyTickets/:customerId', async (request, response) => {
 
 router.get("/getTopTrip", async (request, response) => {
   try {
-    const repeatedtrip = await Repeatedtrip.find({}).sort({ repeatedNum: -1 });
-    response.status(200).json(Repeatedtrip);
+    const RepeatedTrip = await repeatedTrip.find({}).sort({ repeatedNum: -1 });
+    response.status(200).json(RepeatedTrip);
   } catch (error) {
     console.error(error.message);
     response.status(500).json({ message: error.message });
@@ -282,6 +282,37 @@ router.put("/tripTime/:id", async (request, response) => {
 });
 
 
+
+
+
+
+router.put("/tripTime1/:id", async (request, response) => {
+  try {
+    const { id } = request.params;
+    const { tripTime } = request.body;
+    const trip = await Trip.findByIdAndUpdate(id, 
+      {tripTime},
+      //{new: true}
+      );
+
+    if(!trip)
+    response
+    .status(404)
+    .json({ message: 'cannot find user with id ${id} !'});
+  else {
+    const newtrip = await Trip.findById(id);
+    response.status(200).json(newtrip);
+  }  
+  } catch (error) {
+    console.log(error.message);
+    response.status(500).json({ message: error.message});
+  }
+});
+
+
+
+
+
 router.post("/ratingCustomer", async (request, response) => {
   try {
     const trip = await Trip.findById(request.body.tripId);
@@ -347,33 +378,33 @@ router.get("/checkTrip/:id", async (request, response) => {
 });
 
 
-router.get("/checkTrip3/:id", async (request, response) => {
-  try {
-    const { id } = request.params;
-    const trips = await Trip.find({ "customer.id": id }); // Filter trips by customer ID
-    const customer = await Customer.findById(id);
+// router.get("/checkTrip3/:id", async (request, response) => {
+//   try {
+//     const { id } = request.params;
+//     const trips = await Trip.find({ "customer.id": id }); // Filter trips by customer ID
+//     const customer = await Customer.findById(id);
 
-    if (trips && customer) {
-      const today = new Date();
+//     if (trips && customer) {
+//       const today = new Date();
 
-      // Update the status of trips in the past
-      trips.forEach(async (trip) => {
-        if (trip.tripTime < today) {
-          trip.StatusTrip = "finished";
-          await trip.save(); // Save the updated trip
-        }
-      });
+//       // Update the status of trips in the past
+//       trips.forEach(async (trip) => {
+//         if (trip.tripTime < today) {
+//           trip.StatusTrip = "finished";
+//           await trip.save(); // Save the updated trip
+//         }
+//       });
 
-      const filteredTrips = trips.filter((trip) => trip.StatusTrip === "finished");
+//       const filteredTrips = trips.filter((trip) => trip.StatusTrip === "finished");
 
-      response.status(200).json(filteredTrips);
-    } else {
-      response.status(404).json({ message: "Customer or trips not found." });
-    }
-  } catch (error) {
-    response.status(500).json({ error: error.message });
-  }
-});
+//       response.status(200).json(filteredTrips);
+//     } else {
+//       response.status(404).json({ message: "Customer or trips not found." });
+//     }
+//   } catch (error) {
+//     response.status(500).json({ error: error.message });
+//   }
+// });
 
 
 

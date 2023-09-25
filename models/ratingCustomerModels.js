@@ -15,37 +15,39 @@ const ratingSchema = new mongoose.Schema({
       type: String,
       required: true,
     },
-    baggageTransportingService: {
-      type: String,
-      required: true,
-    },
     busDiverSafetyDriving: {
       type: String,
       required: true,
     },
+    baggageTransportingService: {
+      type: String,
+      required: true,
+    },
+    
   }
   ],
 
   ratingFormTime: [{
 
-    launchingdataaccuracylevel: {
+    arrivingDataAccuracy: {
       type: String,
       required: true,
     },
-    arrivingdataaccuracylevel: {
+    launchingDataAccuracy: {
       type: String,
       required: true,
     },
+    
   }
   ],
 
   ratingFormBehaviors: [{
 
-    busDriverbehaviorsandsaviorfaire: {
+    busDriverBehaviorsAndSaviorFaire: {
       type: String,
       required: true,
     },
-    customersaroundbehaviorsandsaviorfaire: {
+    customersAroundBehaviorsAndSaviorFaire: {
       type: String,
       required: true,
     },
