@@ -93,28 +93,31 @@ router.get("/get_allDriver", async (request, response) => {
 
 
 
-router.post("/addTrip", async (request, response) => {
-  const { startPoint, endPoint, driverName } = request.body;
 
-  const foundDriver = await Driver.findOne({ driverName });
+router.post("/addTrip/:id", async (request, response) => {
+  const { startPoint, endPoint } = request.body; // Remove the 'id' variable here
 
-  if (!foundDriver) {
-    return response.status(404).json({ error: "driver not found" });
-  }
+  try {
+    const { id } = request.params;
+    const foundDriver = await Driver.findById(id);
 
-  const newTrip = new Trip({
-    startPoint,
-    endPoint,
-    driverName: foundDriver.driverName, 
-  });
+    if (!foundDriver) {
+      return response.status(404).json({ error: "Driver not found" });
+    }
 
-  newTrip
-    .save()
-    .then((trip) => response.json(trip))
-    .catch((err) => {
-      console.log(err);
-      response.status(500).json({ error: "Could not create trip" });
+    const newTrip = new Trip({
+      startPoint,
+      endPoint,
+      driver: foundDriver._id, // Store the driver's ID in the trip document
     });
+
+    await newTrip.save();
+
+    response.json({ trip: newTrip }); // Return the customer ID in the response
+  } catch (err) {
+    console.error(err);
+    response.status(500).json({ error: "Could not create trip" });
+  }
 });
 
 

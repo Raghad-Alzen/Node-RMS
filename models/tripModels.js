@@ -35,6 +35,11 @@ const tripSchema = new mongoose.Schema({
         ref: "customer",
         required: [false, "Please enter the customer ID"],
       },
+      driver:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "driver",
+        required: [false, "Please enter the driver ID"],
+    }
     
     });
 const Trip = mongoose.model('Trip',tripSchema);
