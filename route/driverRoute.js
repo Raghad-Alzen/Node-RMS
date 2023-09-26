@@ -46,12 +46,12 @@ router.post("/ratingDriver", async (request, response) => {
           response.status(200).json(rating1);
           break;
         case "time":
-          var ratingFormTime = request.body.ratingFormTime;
+          var ratingFormTime = request.body;
           const rating2 = await RatingDriver.create(ratingFormTime);
           response.status(200).json(rating2);
           break;
         case "behaviors":
-          var ratingFormBehaviors = request.body.ratingFormBehaviors;
+          var ratingFormBehaviors = request.body;
           const rating3 = await RatingDriver.create(ratingFormBehaviors);
           response.status(200).json(rating3);
           break;

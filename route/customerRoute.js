@@ -25,16 +25,30 @@ router.get('/getMyTickets/:customerId', async (request, response) => {
 });
 
 
-
 router.get("/getTopTrip", async (request, response) => {
   try {
-    const RepeatedTrip = await repeatedTrip.find({}).sort({ repeatedNum: -1 });
-    response.status(200).json(RepeatedTrip);
+     const pipeline = [
+      {
+        $group: {
+          _id: { start: "$startPoint", end: "$endPoint" },
+          repeatedNum: { $sum: 1 },
+         },
+      },
+      {
+        $sort: { repeatedNum: -1 },
+      },
+    ];
+
+    const repeatedTrips = await repeatedTrip.aggregate(pipeline);
+
+    response.status(200).json(repeatedTrips);
   } catch (error) {
     console.error(error.message);
     response.status(500).json({ message: error.message });
   }
 });
+
+
 
 router.post("/cancelTrip/:id", async (request, response) => {
   try {
@@ -315,12 +329,12 @@ router.post("/ratingCustomer", async (request, response) => {
           response.status(200).json(rating1);
           break;
         case "time":
-          var ratingFormTime = request.body.ratingFormTime;
+          var ratingFormTime = request.body;
           const rating2 = await RatingCustomer.create(ratingFormTime);
           response.status(200).json(rating2);
           break;
         case "behaviors":
-          var ratingFormBehaviors = request.body.ratingFormBehaviors;
+          var ratingFormBehaviors = request.body;
           const rating3 = await RatingCustomer.create(ratingFormBehaviors);
           response.status(200).json(rating3);
           break;
