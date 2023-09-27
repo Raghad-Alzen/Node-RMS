@@ -86,30 +86,33 @@ router.post("/AddNewTicket/:id", async (request, response) => {
     const { id } = request.params;
     const trip = await Trip.findById(id);
     const repeated = await repeatedTrip.findById(id);
-    console.log("repeted table");
+
+    console.log("repeated table");
     console.log(repeated);
     console.log(trip);
+
     if (trip) {
-      if (repeated != null) {
+       if (repeated != null) {
         repeated.forEach(tripp => {
           if (tripp.startPoint == repeated.startPoint && tripp.endPoint == repeated.endPoint) {
-            repeated.repeatedNum += 1;
+            tripp.repeatedNum += 1; // Increment 'repeatedNum'
           }
-        })
+        });
+         await repeated.save();
+      } else {
+         await repeatedTrip.create({ startPoint: request.body.startPoint, endPoint: request.body.endPoint, repeatedNum: 1 });
       }
-      else {
-        repeatedTrip.create({ startPoint: request.body.startPoint, endPoint: request.body.endPoint, repeatedNum: 1 });
-      }
+
       const customer = await Customer.findById(request.body.customer.id);
       console.log(customer);
+
       if (customer) {
         trip.customer = customer;
         trip.StatusTrip = "effective";
+         await trip.save();
       }
+
       console.log(trip);
-      const newTrip = await Trip.updateOne(trip);
-      // Trip.findByIdAndUpdate(id,trip);
-      console.log(newTrip);
       return response.status(200).json(trip);
     } else {
       return response.status(400).json({ error: 'Both startPoint and endPoint are required.' });
@@ -119,8 +122,6 @@ router.post("/AddNewTicket/:id", async (request, response) => {
     response.status(500).json({ message: error.message });
   }
 });
-
-
 
 
 router.post("/tripPrice", async (request, response) => {
