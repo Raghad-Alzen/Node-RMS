@@ -69,14 +69,14 @@ router.post("/cancelTrip/:id", async (request, response) => {
   }
 });
 
-router.get("/viewTripDescription/:id", async (req, res) => {
+router.get("/viewTripDescription/:id", async (request, response) => {
   try {
-    const { id } = req.params;
+    const { id } = request.params;
     const trip = await Trip.findById(id);
-    if (trip) res.status(200).json(trip);
-    else res.status(404).json({ message: "can't find trip" });
+    if (trip) response.status(200).json(trip);
+    else response.status(404).json({ message: "can't find trip" });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    response.status(500).json({ message: error.message });
   }
 });
 

@@ -116,7 +116,7 @@ router.get("/get_allDriver", async (request, response) => {
 
 
 
-
+//idTrip
 router.post("/addTrip/:id", async (request, response) => {
   const { startPoint, endPoint } = request.body; 
 
@@ -136,7 +136,7 @@ router.post("/addTrip/:id", async (request, response) => {
 
     await newTrip.save();
 
-    response.json({ trip: newTrip }); 
+    response.json({ trip: newTrip ,name: `${foundDriver.firstName} ${foundDriver.lastName}` }); 
   } catch (err) {
     console.error(err);
     response.status(500).json({ error: "Could not create trip" });
@@ -175,32 +175,66 @@ router.delete("/deleteTrip/:id", async (request, response) => {
 });
 
 
+
 router.get("/get_allTrip", async (request, response) => {
   try {
-    const trip = await Trip.find({});
-    response.status(200).json(trip);
-  } catch (error) {
-    console.log(error.message);
-    response.status(500).json({ message: error.message });
-  }
-});
+   const trips = await Trip.find({}).lean();
+   const driverIds = trips.map(trip => trip.driver);
+   const drivers = await Driver.find({ _id: { $in: driverIds } });
+  
+   const customerIds = trips.map(trip => trip.customer);
+   const customers = await Customer.find({ _id: { $in: customerIds } });
+  
+   const driverMap = {};
+   drivers.forEach(driver => {
+   driverMap[driver._id.toString()] = driver.firstName;
+   });
+  
+   const customerMap = {};
+   customers.forEach(customer => {
+   customerMap[customer._id.toString()] = customer.firstName;
+   });
+  
+   const tripsWithDriverAndCustomerNames = trips.map(trip => ({
+   ...trip,
+   driverName: driverMap[trip.driver] ,
+   customerName: customerMap[trip.customer] , 
+   }));
+  
+   response.status(200).json(tripsWithDriverAndCustomerNames);
+   } catch (error) {
+   console.log(error.message);
+   response.status(500).json({ message: error.message });
+   }
+  });
 
-router.get("/all_finishedtrip", async (request, response) => {
-  try {
-    const trips = await Trip.find({});
-    const finishedTrips = [];
-    trips.forEach(trip => {
-      if(trip.StatusTrip == "finished")
-      finishedTrips.push(trip);
-    });
+
+
+  router.get("/all_finishedtrip", async (request, response) => {
+     try {
+     const trips = await Trip.find({ StatusTrip: "finished" }).lean(); 
     
+     const driverIds = trips.map(trip => trip.driver);
+     const drivers = await Driver.find({ _id: { $in: driverIds } }).lean();
+    
+     const driverMap = {};
+     drivers.forEach(driver => {
+     driverMap[driver._id.toString()] = driver.firstName;
+     });
+    
+     const finishedTripsWithDriverNames = trips.map(trip => ({
+     ...trip,
+     driverName: driverMap[trip.driver] || 'Unknown',
+     }));
+    
+     response.status(200).json(finishedTripsWithDriverNames);
+     } catch (error) {
+     console.log(error.message);
+     response.status(500).json({ message: error.message });
+     }
+    });
 
-    response.status(200).json(finishedTrips);
-  } catch (error) {
-    console.log(error.message);
-    response.status(500).json({ message: error.message });
-  }
-});
+
 
 
 module.exports = router;
